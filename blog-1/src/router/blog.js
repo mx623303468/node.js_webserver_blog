@@ -19,10 +19,16 @@ const handleBlogRouter = (req, res) => {
 		const keyword = req.query.keyword || ''
 
 		// 调用 controller 获取数据
-		const listData = getList(author, keyword)
+		const listResult = getList(author, keyword)
+		console.log('listResult: ', listResult)
 
-		// 返回数据
-		return new SuccessModel(listData)
+		return listResult.then(listData => {
+			return new SuccessModel(listData)
+		})
+
+		// console.log(listData)
+		// // 返回数据
+		// return new SuccessModel(listData)
 	}
 
 	// 获取博客详情

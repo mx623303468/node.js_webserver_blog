@@ -32,6 +32,7 @@ const getPostData = (req) => {
 	return promise
 }
 
+
 const serverHandle = (req, res) => {
 	// 更改响应头的数据格式
 	res.setHeader('Content-type', 'application/json')
@@ -43,17 +44,30 @@ const serverHandle = (req, res) => {
 	// 获取 query
 	req.query = querystring.parse(url.split('?')[1])
 
+	console.log(getPostData(req))
 	getPostData(req).then(postData => {
 		req.body = postData
 
 		// 处理 blog 路由
-		const blogData = handleBlogRouter(req, res)
+		// const blogData = handleBlogRouter(req, res)
 
-		if (blogData) {
-			res.end(
-				JSON.stringify(blogData)
-			)
-			return
+		// if (blogData) {
+		// 	res.end(
+		// 		JSON.stringify(blogData)
+		// 	)
+		// 	return
+		// }
+
+		// 处理 blog 路由
+		const blogResult = handleBlogRouter(req, res)
+
+		if (blogResult) {
+			blogResult.then(blogData => {
+				res.end(
+					JSON.stringify(blogData)
+				)
+				return
+			})
 		}
 
 		// 处理 user 路由
