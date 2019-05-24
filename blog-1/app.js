@@ -41,6 +41,19 @@ const serverHandle = (req, res) => {
   // 获取 query
   req.query = querystring.parse(url.split('?')[1])
 
+  req.cookie = {}
+  const cookieStr = req.headers.cookie || ''
+
+  cookieStr.split(';').forEach(item => {
+    const arr = item.split('=').map(ele => {
+      return ele.trim()
+    })
+
+    const key = arr[0]
+    const val = arr[1]
+    req.cookie[key] = val
+  })
+
   getPostData(req).then(postData => {
     req.body = postData
 

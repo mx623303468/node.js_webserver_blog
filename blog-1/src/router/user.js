@@ -1,4 +1,4 @@
-const { checkLogin } = require('../controller/user')
+const { login } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 
 const handleUserRouter = async (req, res) => {
@@ -8,7 +8,7 @@ const handleUserRouter = async (req, res) => {
     const username = req.body.username
     const userpwd = req.body.userpwd
 
-    const data = await checkLogin(username, userpwd)
+    const data = await login(username, userpwd)
     return data.username
       ? new SuccessModel('登录成功')
       : new ErrorModel('登录失败')
