@@ -2,14 +2,14 @@ const { exec } = require('../db/mysql')
 
 // 获取博客列表
 const getList = (author, keyword) => {
-  let sql = 'select * from blog where 1=1 '
-
+  let sql = 'select blogid, blogtitle, blogcontent, blogcreatetime, blogauthor from blog where 1=1 '
+  
   if (author) {
     sql += `and blogauthor='${author}' `
   }
 
   if (keyword) {
-    sql += `and blogtitle like '%${keyword}%' or blogcontent like '%${keyword}%' `
+    sql += `and blogtitle like '${keyword}' or blogcontent like '${keyword}' `
   }
 
   sql += `order by blogcreatetime desc;`
@@ -18,54 +18,59 @@ const getList = (author, keyword) => {
 }
 
 // 获取博客详情
-const getDetail = async id => {
-  let sql = `SELECT * FROM blog WHERE blogid=${id};`
+const getDetail = (id) => {
+  // return {
+  //   id: 1,
+  //     title: '标题A',
+  //     content: '内容A',
+  //     createTime: '1554565557813',
+  //     author: 'yinxiaobo'
+  // }
+  let sql = `select * from blog where blogid=${id}`
 
-  const rows = await exec(sql)
-  console.log(rows)
-  return rows[0]
+  return exec(sql).then(rows => {
+    return rows[0]
+  })
 }
 
 // 新建博客
-const newBlog = async (blogData = {}) => {
+const newBlog = (blogData = {}) => {
   // blogData 是一个对象，包含 title content 等内容
-  const blogtitle = blogData.blogtitle
-  const blogcontent = blogData.blogcontent
-  const blogauthor = blogData.blogauthor
-  const blogcreatetime = Date.now()
+  // return {
+  //   id: 3
+  // }
+  let title = blogData.title
+  let content = blogData.content
+  let author = blogData.author
+  let createTime = Date.now()
 
-  let sql = `INSERT INTO blog(blogtitle, blogcontent, blogauthor, blogcreatetime) VALUES('${blogtitle}', '${blogcontent}', '${blogauthor}', ${blogcreatetime});`
+  const sql = `insert into blog(blogtitle, blogcreatetime, blogcontent, blogauthor) values('${title}', ${createTime}, '${content}', '${author}');`
 
-  const insertData = await exec(sql)
-  console.log('inertData: ', insertData)
-  return { id: insertData.insertId }
+  return exec(sql).then(rows => {
+    // OkPacket {
+    //   fieldCount: 0,
+    //   affectedRows: 1,
+    //   insertId: 2,
+    //   serverStatus: 2,
+    //   warningCount: 0,
+    //   message: '',
+    //   protocol41: true,
+    //   changedRows: 0 
+    // }
+    return {
+      id: rows.insertId
+    }
+  })
 }
 
 // 更新博客
-const updataBlog = async (id, blogData = {}) => {
-  const blogtitle = blogData.blogtitle
-  const blogcontent = blogData.blogcontent
-
-  const sql = `update blog set blogtitle='${blogtitle}', blogcontent='${blogcontent}' where blogid=${id}`
-
-  const updateData = await exec(sql)
-  console.log('updateData: ', updateData)
-  if (updateData.affectedRows > 0) {
-    return true
-  }
-  return false
+const updataBlog = (id, blogData = {}) => {
+  return true
 }
 
 // 删除博客
-const delBlog = async (id, author) => {
-  const sql = `delete from blog where blogid=${id} and blogauthor='${author}';`
-
-  const delData = await exec(sql)
-
-  if (delData.affectedRows > 0) {
-    return true
-  }
-  return fasle
+const delBlog = (id) => {
+  return true
 }
 
 module.exports = {

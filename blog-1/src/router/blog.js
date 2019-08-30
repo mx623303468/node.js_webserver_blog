@@ -40,7 +40,8 @@ const handleBlogRouter = (req, res) => {
 
   // 新建博客
   if (method === 'POST' && req.path === '/api/blog/new') {
-    req.body.blogauthor = 'yin'
+    req.body.author = 'yin' // 假数据，待开发登录时，再改成正式数据
+    console.log('req.body: ', req.body)
     const result = newBlog(req.body)
     return result.then(data => {
       return new SuccessModel(data)

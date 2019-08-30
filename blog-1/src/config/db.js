@@ -6,7 +6,7 @@ if (env === 'dev') {
   MYSQL_CONFIG = {
     host: '127.0.0.1',
     user: 'root',
-    password: '123456789',
+    password: '123',
     port: '3306',
     database: 'myblog'
   }
@@ -16,7 +16,7 @@ if (env === 'production') {
   MYSQL_CONFIG = {
     host: '127.0.0.1',
     user: 'root',
-    password: '123456789',
+    password: '123',
     prot: '3306',
     database: 'myblog'
   }
