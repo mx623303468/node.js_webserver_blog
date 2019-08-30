@@ -82,8 +82,15 @@ const updataBlog = (id, blogData = {}) => {
 }
 
 // 删除博客
-const delBlog = (id) => {
-  return true
+const delBlog = (id, author) => {
+  const sql = `delete from blog where blogid=${id} and blogauthor='${author}'`
+
+  return exec(sql).then(rows => {
+    if (rows.affectedRows > 0) {
+      return true
+    }
+    return false
+  })
 }
 
 module.exports = {
