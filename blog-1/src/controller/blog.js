@@ -65,7 +65,20 @@ const newBlog = (blogData = {}) => {
 
 // 更新博客
 const updataBlog = (id, blogData = {}) => {
-  return true
+  // return true
+  let title = blogData.title
+  let content = blogData.content
+
+  const sql = `
+    update blog set blogtitle='${title}', blogcontent='${content}' where blogid=${id}
+  `
+
+  return exec(sql).then(rows => {
+    if (rows.affectedRows > 0) {
+      return true
+    }
+    return false
+  })
 }
 
 // 删除博客
