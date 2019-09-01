@@ -7,6 +7,9 @@ var logger = require('morgan'); // 处理日志的模块
 var indexRouter = require('./routes/index'); // 默认的路由实例 /
 var usersRouter = require('./routes/users'); // /users 路由
 
+const blogRouter = require('./routes/blog'); // 博客相关路由
+const userRouter = require('./routes/user'); // 用户相关路由
+
 var app = express(); // 创建 express 实例
 
 // 视图模板文件 
@@ -22,6 +25,10 @@ app.use(express.static(path.join(__dirname, 'public'))); // 注册静态资源�
 
 app.use('/', indexRouter); // 注册 / 路由
 app.use('/users', usersRouter); // 注册 /users 路由
+
+app.use('/api/blog', blogRouter) // 注册博客相关路由
+app.use('/api/user', userRouter) // 注册用户相关路由
+
 
 // 处理 404
 // catch 404 and forward to error handler
